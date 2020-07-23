@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  osrm_extract:
+    image: osrm/osrm-backend
+    command: osrm-extract -p /data/tourbuzz.lua /data/noord-holland-latest.osm.pbf 
+    volumes:
+      - ./data:/data
+
+  osrm_partition:
+    image: osrm/osrm-backend
+    command: osrm-partition /data/noord-holland-latest.osrm
+    volumes:
+      - ./data:/data
+  
+  osrm_customize:
+    image: osrm/osrm-backend
+    command: osrm-customize /data/noord-holland-latest.osrm
+    volumes:
+      - ./data:/data
+
+  osrm_server:
+    image: osrm/osrm-backend
+    command: osrm-routed --algorithm mld /data/noord-holland-latest.osrm
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/data
+
+  osrm_frontend:
+    image: osrm/osrm-frontend
+    ports:
+      - "9966:9966"
+
+  osmpg:
+    build: .
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - ./data:/data
+    ports:
+      - "5432:5432"
