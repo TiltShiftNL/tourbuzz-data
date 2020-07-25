@@ -1,0 +1,9 @@
+stages:
+- name: Build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: osm-data:${CICD_EXECUTION_SEQUENCE}
+timeout: 60
+notification: {}
