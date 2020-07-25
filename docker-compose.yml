@@ -3,7 +3,7 @@ version: '3.7'
 services:
   osrm_extract:
     image: osrm/osrm-backend
-    command: osrm-extract -p /data/tourbuzz.lua /data/noord-holland-latest.osm.pbf 
+    command: osrm-extract -p /data/tourbuzz-osrm.lua /data/noord-holland-latest.osm.pbf 
     volumes:
       - ./data:/data
 
