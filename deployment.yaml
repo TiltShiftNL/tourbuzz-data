@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Job
+metadata:
+  labels:
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: deployment-default-osm2pgsql
+  name: osm2pgsql
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-default-osm2pgsql
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-default-osm2pgsql
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: osm2pgsql
+            optional: false
+        image: 127.0.0.1:34060/osm-data:${CICD_EXECUTION_SEQUENCE}
+        imagePullPolicy: Always
+        name: osm2pgsql
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      restartPolicy: Never
+      schedulerName: default-scheduler
+  backoffLimit: 1
