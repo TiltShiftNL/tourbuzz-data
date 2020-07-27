@@ -1,19 +1,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  labels:
-    cattle.io/creator: norman
-    workload.user.cattle.io/workloadselector: deployment-default-osm2pgsql
   name: osm2pgsql
   namespace: default
 spec:
-  selector:
-    matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-default-osm2pgsql
   template:
-    metadata:
-      labels:
-        workload.user.cattle.io/workloadselector: deployment-default-osm2pgsql
     spec:
       containers:
       - envFrom:
